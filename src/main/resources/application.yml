@@ -1,0 +1,78 @@
+spring:
+  config:
+    import: "optional:file:.env[.properties]"
+  application:
+    name: spring-ai-chatbot
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${RABBITMQ-USER:admin}
+    password: ${RABBITMQ-PASS:pass}
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        options:
+          model: ${EMBEDDING-MODEL:nomic-embed-text:latest}
+          timeout: 120s          # ← 2 minutes total timeout
+          connect-timeout: 30s   # ← connection timeout
+          read-timeout: 120s     # ← wait up to 2 min for response
+      chat:
+        options:
+          model: ${CHAT-MODEL:qwen2.5-coder:14b}
+          temperature: 0.7
+          timeout: 300s          # ← 5 minutes total
+          read-timeout: 300s
+          connect-timeout: 30s
+    vectorstore:
+      chroma:
+        client:
+          host: http://localhost
+          port: 8000
+        collection-name: rag
+        initialize-schema: true
+
+  webflux:
+    client:
+      connect-timeout: 30s
+      read-timeout: 120s
+      write-timeout: 120s
+
+logging:
+  level:
+    org.springframework: DEBUG
+
+etl:
+  file:
+    input-directory: ./data/uploads
+    polling-rate: 5000
+    worker-pool-size: 8
+    batch-size: 64
+
+model:
+  install:
+    concurrency: 3
+    timeout-seconds: 1800
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}

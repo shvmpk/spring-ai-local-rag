@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+
+  chroma:
+    image: ghcr.io/chroma-core/chroma:0.6.4.dev242
+    container_name: chroma
+    ports:
+      - "8000:8000"
+    environment:
+      ALLOW_RESET: "true"
+    volumes:
+      - ./chroma-data:/chroma/.chroma/index
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:4.1-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"     # AMQP
+      - "15672:15672"   # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: pass
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    restart: unless-stopped
+
+  redis:
+    image: redis:8.0.2-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  rabbitmq_data:
+  redis_data:
