@@ -1,4 +1,5 @@
-# **Local AI Chat + Document ETL + Model Management Platform**
+# Document Search & Insights Platform 
+**(Local AI Chat + Document ETL + Model Management Platform)**
 
 This project is a **scalable LLM backend** designed to run fully **locally** using:
 
