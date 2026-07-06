@@ -1,4 +1,5 @@
-# Document Search & Insights Platform 
+<img width="1774" height="887" alt="dsffsfsdf" src="https://github.com/user-attachments/assets/8df8cbca-ba35-4ad1-a7a2-0770b4b32a17" />
+
 **(Local AI Chat + Document ETL + Model Management Platform)**
 
 This project is a **scalable LLM backend** designed to run fully **locally** using:
